@@ -182,5 +182,19 @@ function M.build_odoo_development_image(odoo_version)
 end
 
 M.development_container_name = DEVELOPMENT_CONTAINER_NAME
+M.lang_identation = {
+  lua = 2,
+  javascript = 2,
+  typescript = 2,
+  javascriptreact = 2,
+  typescriptreact = 2,
+  json = 2,
+  html = 2,
+  css = 2,
+  scss = 2,
+  yaml = 2,
+  markdown = 2,
+  python = 4,
+}
 
 return M

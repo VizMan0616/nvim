@@ -6,9 +6,9 @@ g.netrw_banner = 0
 o.nu = true
 o.relativenumber = true
 
-o.tabstop = 4
-o.softtabstop = 4
-o.shiftwidth = 4
+o.tabstop = 2
+o.softtabstop = 2
+o.shiftwidth = 2
 o.expandtab = true
 
 o.wrap = false

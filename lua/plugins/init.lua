@@ -11,6 +11,12 @@ return {
     priority = 1000,
     config = function()
       vim.cmd "colorscheme palenightfall"
+
+      local float_bg = "#32374d"
+      local accent_blue = "#82aaff"
+
+      vim.api.nvim_set_hl(0, "NormalFloat", { bg = float_bg })
+      vim.api.nvim_set_hl(0, "FloatBorder", { fg = accent_blue, bg = float_bg })
     end,
   },
 

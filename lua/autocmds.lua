@@ -1,10 +1,24 @@
 local autocmd = vim.api.nvim_create_autocmd
 local create_cmd = vim.api.nvim_create_user_command
+local lang_indentation = require("utils").lang_identation
 
 autocmd({ "VimEnter" }, {
   callback = function()
     require("nvim-tree.api").tree.open()
     vim.cmd "wincmd p"
+  end,
+})
+
+autocmd("FileType", {
+  pattern = vim.tbl_keys(lang_indentation), -- Dynamically monitors all keys in the table above
+  callback = function(args)
+    local width = lang_indentation[vim.bo[args.buf].filetype]
+    if width then
+      vim.bo[args.buf].tabstop = width
+      vim.bo[args.buf].softtabstop = width
+      vim.bo[args.buf].shiftwidth = width
+      vim.bo[args.buf].expandtab = true
+    end
   end,
 })
 

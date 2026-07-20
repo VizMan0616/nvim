@@ -39,13 +39,17 @@ local telescope_builtin = require "telescope.builtin"
 
 map("n", "<leader>fw", telescope_builtin.live_grep, { desc = "telescope live grep" })
 map("n", "<leader>fb", telescope_builtin.buffers, { desc = "telescope find buffers" })
-map("n", "<leader>fo", telescope_builtin.oldfiles, { desc = "telescope find oldfiles" })
+map("n", "<leader>fo", function ()
+  telescope_builtin.oldfiles { only_cwd = true }
+end, { desc = "telescope find oldfiles" })
 map("n", "<leader>fz", telescope_builtin.current_buffer_fuzzy_find, { desc = "telescope find in current buffer" })
 map("n", "<leader>ff", telescope_builtin.find_files, { desc = "telescope find files" })
 map(
   "n",
   "<leader>fa",
-  "<cmd>Telescope find_files follow=true no_ignore=true hidden=true<CR>",
+  function ()
+    telescope_builtin.find_files { follow = true, no_ignore = true, hidden = true } 
+  end,
   { desc = "telescope find all files" }
 )
 
@@ -53,6 +57,9 @@ map(
 map({ "n", "x" }, "<leader>fm", function()
   require("conform").format { lsp_fallback = true }
 end, { desc = "general format file" })
+
+-- lsp diagnostics
+map("n", "<leader>ds", vim.diagnostic.open_float, { desc = "LSP show diagnostic float" })
 
 -- only for python
 vim.api.nvim_create_autocmd("FileType", {

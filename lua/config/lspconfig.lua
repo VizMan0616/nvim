@@ -9,13 +9,13 @@ local signs = {
 
 vim.diagnostic.config {
   signs = { text = signs },
-  virtual_text = true,
+  virtual_text = false,
   underline = true, -- Always on
   update_in_insert = false,
   float = {
     focusable = false,
     style = "minimal",
-    border = "rounded",
+    border = "single",
     source = true,
   },
 }
