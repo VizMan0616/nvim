@@ -1,4 +1,5 @@
 local treesitter = require("nvim-treesitter")
+local files = require("paths").Filetypes.ForTreesitter
 
 treesitter.setup {
   install_dir = vim.fn.stdpath("data") .. "/site",
@@ -6,9 +7,4 @@ treesitter.setup {
   indent = {enable = true},
 }
 
-local ensure_installed = {
-  "lua", "vim", "luadoc", "vimdoc", "printf",
-  "markdown", "markdown_inline", "html", "xml", "yaml",
-  "dockerfile", "gitignore", "query", "bash"
-}
-treesitter.install(ensure_installed)
+treesitter.install(files)

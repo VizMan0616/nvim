@@ -48,3 +48,41 @@ map(
   "<cmd>Telescope find_files follow=true no_ignore=true hidden=true<CR>",
   { desc = "telescope find all files" }
 )
+
+-- conform
+map({ "n", "x" }, "<leader>fm", function()
+  require("conform").format { lsp_fallback = true }
+end, { desc = "general format file" })
+
+-- only for python
+vim.api.nvim_create_autocmd("FileType", {
+  pattern = 'python',
+  callback = function ()
+    -- This format imports
+    map({ 'n', 'x' }, '<leader>fi', function ()
+      require('conform').format({
+        async = true,
+        lsp_fallback = true,
+        formatters = { 'ruff_organize_imports' },
+      }, function() print('All imports were organized!') end)
+    end, { buffer = true, desc = "Organize imports" })
+
+    -- This remove unused imports
+    map({ 'n', 'x' }, '<leader>fx', function ()
+      require('conform').format({
+        async = true,
+        lsp_fallback = true,
+        formatters = { 'ruff_remove_imports' },
+      }, function() print('Unused imports cleaned!') end)
+    end, { buffer = true, desc = "Remove unused imports"})
+
+    -- This changes single quotes by double quotes
+    map({ 'n', 'x' }, '<leader>fq', function ()
+      require('conform').format({
+        async = true,
+        lsp_fallback = true,
+        formatters = { 'ruff_fix_single_quotes' },
+      }, function() print('\' now is \"!') end)
+    end, { buffer = true, desc = "Fix quote style"})
+  end
+})

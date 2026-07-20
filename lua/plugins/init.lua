@@ -85,8 +85,23 @@ return {
   {
     "neovim/nvim-lspconfig",
     config = function()
-      require("mason-lspconfig").setup({ ensure_installed = { "lua_ls" } })
+      local servers = {
+        "lua_ls",
+        -- python
+        "ruff", "basedpyright", "ty",
+      }
+
+      require("mason-lspconfig").setup({ ensure_installed = servers })
       require("config.lspconfig").defaults()
+      require("config.lspconfig").lspconfigs(servers)
+    end,
+  },
+
+  {
+    'stevearc/conform.nvim',
+    ft = require("config.conform").ft,
+    opts = function(_, opts)
+        return utils.merge_opts(opts, require("config.conform").opts)
     end,
   },
 
