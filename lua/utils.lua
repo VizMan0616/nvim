@@ -82,7 +82,7 @@ function M.check_if_odoo_development_image_exists(odoo_version)
 end
 
 function M.check_development_image_path_exists()
-  local development_image_parent = os.getenv("HOME") .. "/Productivity/Personal/odoo-base-docker"
+  local development_image_parent = HOME_DIR .. "/Productivity/Personal/odoo-base-docker"
   local development_image_abs_path = development_image_parent .. "/Dockerfile"
 
   local development_image_parent_exists = vim.fn.isdirectory(development_image_parent) == 1
