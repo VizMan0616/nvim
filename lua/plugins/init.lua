@@ -21,6 +21,9 @@ return {
     opts = function(_, opts)
       return utils.merge_opts(opts, require("config.nvimtree").opts)
     end,
+    -- config = function(_, opts)
+    --   require("config.nvimtree").config(_, opts)
+    -- end
   },
 
   {
@@ -97,6 +100,13 @@ return {
     end,
     opts_extend = function()
       return require("config.blink-cmp").opts_extend
+    end,
+  },
+
+  {
+    "lewis6991/gitsigns.nvim",
+    opts = function(_, opts)
+      return utils.merge_opts(opts, require("config.gitsigns").opts)
     end,
   },
 }
