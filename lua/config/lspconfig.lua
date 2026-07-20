@@ -1,16 +1,16 @@
 local M = {}
 local map = vim.keymap.set
 local signs = {
-    [vim.diagnostic.severity.ERROR] = " ",
-    [vim.diagnostic.severity.WARN] = " ",
-    [vim.diagnostic.severity.HINT] = "󰠠 ",
-    [vim.diagnostic.severity.INFO] = " ",
+  [vim.diagnostic.severity.ERROR] = " ",
+  [vim.diagnostic.severity.WARN] = " ",
+  [vim.diagnostic.severity.HINT] = "󰠠 ",
+  [vim.diagnostic.severity.INFO] = " ",
 }
 
-vim.diagnostic.config({
+vim.diagnostic.config {
   signs = { text = signs },
   virtual_text = true,
-  underline = true,  -- Always on
+  underline = true, -- Always on
   update_in_insert = false,
   float = {
     focusable = false,
@@ -18,7 +18,7 @@ vim.diagnostic.config({
     border = "rounded",
     source = true,
   },
-})
+}
 
 function M.on_init(client, _)
   if vim.fn.has "nvim-0.11" ~= 1 then
@@ -88,14 +88,14 @@ function M.defaults()
     cmd = { "lua-language-server" },
     fileypes = { "lua" },
     root_dir = root_dir_lua,
-    settings = lua_lsp_settings
+    settings = lua_lsp_settings,
   })
-  vim.lsp.enable("lua_ls")
+  vim.lsp.enable "lua_ls"
 end
 
 function M.lspconfigs(servers)
-  local paths = require("paths")
-  local utils = require("utils")
+  local paths = require "paths"
+  local utils = require "utils"
 
   local function get_python_runtime(odoo_version)
     local workspace = vim.fn.getcwd()
@@ -184,7 +184,7 @@ function M.lspconfigs(servers)
         "package.json",
         "jsconfig.json",
         "tsconfig.json",
-        ".git"
+        ".git",
       }) or vim.fn.expand "%p:h"
 
       cb(root)
@@ -193,7 +193,6 @@ function M.lspconfigs(servers)
 
   local ruff_config = paths.lsp.ruff.config_path()
   local python_runtime = get_python_runtime "17"
-
 
   vim.lsp.config("ruff", {
     before_init = function(params)

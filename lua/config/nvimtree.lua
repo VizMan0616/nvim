@@ -33,12 +33,12 @@ M.opts = {
     },
   },
 }
-M.config = function (_, opts)
+M.config = function(_, opts)
   require("nvim-tree").setup(opts)
 
-  vim.cmd([[ highlight NvimTreeGitIgnored guibg=NONE guifg=#5c6370 ]])
-  vim.cmd([[ highlight NvimTreeHiddenFile guibg=NONE guifg=#5c6370 ]])
-  vim.cmd([[ highlight NvimTreeEmptyFolder guibg=NONE guifg=#5c6370 ]])
+  vim.cmd [[ highlight NvimTreeGitIgnored guibg=NONE guifg=#5c6370 ]]
+  vim.cmd [[ highlight NvimTreeHiddenFile guibg=NONE guifg=#5c6370 ]]
+  vim.cmd [[ highlight NvimTreeEmptyFolder guibg=NONE guifg=#5c6370 ]]
 end
 
 return M

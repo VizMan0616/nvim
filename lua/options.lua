@@ -27,7 +27,7 @@ o.splitkeep = "screen"
 
 o.swapfile = file
 o.backup = false
-o.undodir = vim.fn.stdpath("data") .. "/undodir"
+o.undodir = vim.fn.stdpath "data" .. "/undodir"
 o.timeoutlen = 400
 o.undofile = true
 
@@ -43,11 +43,11 @@ o.colorcolumn = "0"
 o.signcolumn = "yes"
 o.cmdheight = 0
 o.termguicolors = true
-o.guicursor = 'n-v-c:block-blinkon50-blinkoff50,i-ci-ve:ver25-blinkon50-blinkoff50,r-cr-o:hor20'
+o.guicursor = "n-v-c:block-blinkon50-blinkoff50,i-ci-ve:ver25-blinkon50-blinkoff50,r-cr-o:hor20"
 
 vim.api.nvim_create_autocmd("TextYankPost", {
-    desc = "Highlight when yanking text",
-    callback = function()
-        vim.hl.on_yank()
-    end,
+  desc = "Highlight when yanking text",
+  callback = function()
+    vim.hl.on_yank()
+  end,
 })

@@ -1,15 +1,15 @@
-local bufferline = require("bufferline")
+local bufferline = require "bufferline"
 bufferline.setup {
   options = {
     mode = "buffers",
     style_preset = bufferline.style_preset.no_italic,
     separator_style = "slope",
     sort_by = "insert_at_end",
-    indicator = { style = "underline", },
+    indicator = { style = "underline" },
     offsets = {
       {
         filetype = "NvimTree",
-        text = "File Explorer", 
+        text = "File Explorer",
         text_align = "left",
         separator = true,
       },

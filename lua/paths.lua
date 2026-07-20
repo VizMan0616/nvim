@@ -1,62 +1,76 @@
 local M = {}
 
-local config_dir = vim.fn.stdpath('config')
-local data_dir = vim.fn.stdpath('data')
-local cache_dir = vim.fn.stdpath('cache')
-local home_dir = vim.fn.expand('$HOME')
+local config_dir = vim.fn.stdpath "config"
+local data_dir = vim.fn.stdpath "data"
+local cache_dir = vim.fn.stdpath "cache"
+local home_dir = vim.fn.expand "$HOME"
 
 M.lsp = {
   ruff = {
-    config_path = function ()
+    config_path = function()
       local parent_dir = vim.fn.getcwd()
-      local ruff_path = parent_dir .. '/ruff.toml'
+      local ruff_path = parent_dir .. "/ruff.toml"
 
-      local ruff_file = io.open(ruff_path, 'r')
+      local ruff_file = io.open(ruff_path, "r")
       if ruff_file ~= nil then
         return ruff_path
       end
 
-      return config_dir .. '/queries/ruff/ruff.toml'
+      return config_dir .. "/queries/ruff/ruff.toml"
     end,
-    cache_dir = cache_dir .. '/.ruff_cache',
-    log_path = data_dir .. '/ruff.log'
+    cache_dir = cache_dir .. "/.ruff_cache",
+    log_path = data_dir .. "/ruff.log",
   },
 }
 
 M.Filetypes = {
   ForTreesitter = {
-      -- VIM/NeoVIM
-      "lua", "vim", "luadoc", "vimdoc", "printf",
-      -- Webdev
-      "html", "css", "scss",
-      -- JS & TS
-      "jsdoc", "javascript", "typescript",
-      -- JSON
-      "json",
-      -- Graphql
-      "graphql",
-      -- Python
-      "python",
-      -- Golang
-      -- "go",
-      -- YAML & TOML
-      "yaml", "toml",
-      -- Markdown
-      "markdown", "markdown_inline",
-      -- RST
-      -- "rst",
-      -- Lang
-      "po",
-      -- XML
-      "xml",
-      --CSV
-      "csv",
-      -- Shell
-      "bash", "powershell",
-      -- Other
-      "diff", "dockerfile", "query", "gitignore"
+    -- VIM/NeoVIM
+    "lua",
+    "vim",
+    "luadoc",
+    "vimdoc",
+    "printf",
+    -- Webdev
+    "html",
+    "css",
+    "scss",
+    -- JS & TS
+    "jsdoc",
+    "javascript",
+    "typescript",
+    -- JSON
+    "json",
+    -- Graphql
+    "graphql",
+    -- Python
+    "python",
+    -- Golang
+    -- "go",
+    -- YAML & TOML
+    "yaml",
+    "toml",
+    -- Markdown
+    "markdown",
+    "markdown_inline",
+    -- RST
+    -- "rst",
+    -- Lang
+    "po",
+    -- XML
+    "xml",
+    --CSV
+    "csv",
+    -- Shell
+    "bash",
+    "powershell",
+    -- Other
+    "diff",
+    "dockerfile",
+    "query",
+    "gitignore",
   },
-  ForCode = { 'lua', 'json', 'python' },
+  ForCode = { "lua", "json", "python" },
 }
 
 M.config_dir = config_dir

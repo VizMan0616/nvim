@@ -1,4 +1,4 @@
-local utils = require("utils")
+local utils = require "utils"
 
 return {
   -- dependencies
@@ -10,7 +10,7 @@ return {
     lazy = false,
     priority = 1000,
     config = function()
-      vim.cmd("colorscheme palenightfall")
+      vim.cmd "colorscheme palenightfall"
     end,
   },
 
@@ -29,7 +29,7 @@ return {
   {
     "nvim-lualine/lualine.nvim",
     config = function()
-      require("config.lualine")
+      require "config.lualine"
     end,
   },
 
@@ -38,7 +38,7 @@ return {
     version = "*",
     dependencies = "nvim-tree/nvim-web-devicons",
     config = function()
-      require("config.bufferline")
+      require "config.bufferline"
     end,
   },
 
@@ -46,7 +46,7 @@ return {
     "nvim-mini/mini.nvim",
     version = "*",
     config = function()
-        require("config.mini")
+      require "config.mini"
     end,
   },
 
@@ -69,7 +69,7 @@ return {
     build = ":TSUpdate | TSInstallAll",
 
     config = function()
-      require("config.treesitter")
+      require "config.treesitter"
     end,
   },
 
@@ -88,20 +88,22 @@ return {
       local servers = {
         "lua_ls",
         -- python
-        "ruff", "basedpyright", "ty",
+        "ruff",
+        "basedpyright",
+        "ty",
       }
 
-      require("mason-lspconfig").setup({ ensure_installed = servers })
+      require("mason-lspconfig").setup { ensure_installed = servers }
       require("config.lspconfig").defaults()
       require("config.lspconfig").lspconfigs(servers)
     end,
   },
 
   {
-    'stevearc/conform.nvim',
+    "stevearc/conform.nvim",
     ft = require("config.conform").ft,
     opts = function(_, opts)
-        return utils.merge_opts(opts, require("config.conform").opts)
+      return utils.merge_opts(opts, require("config.conform").opts)
     end,
   },
 
@@ -110,7 +112,7 @@ return {
     "saghen/blink.cmp",
     dependencies = { "rafamadriz/friendly-snippets" },
     version = "1.*",
-    opts = function (_, opts)
+    opts = function(_, opts)
       return utils.merge_opts(opts, require("config.blink-cmp").opts)
     end,
     opts_extend = function()
