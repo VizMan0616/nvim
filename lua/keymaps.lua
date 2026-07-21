@@ -1,8 +1,12 @@
+local state_file = vim.fn.stdpath("state") .. "/nvim_tree_show_dotfiles"
 local map = vim.keymap.set
 
 map("n", ";", ":", { desc = "CMD enter command mode" })
 map("n", "<leader>q", "<cmd>qa<CR>", { desc = "Exit VIM" })
 map("n", "<leader>qs", "<cmd>wqa<CR>", { desc = "Exit VIM & save buffer" })
+
+map("v", "<", "<gv", { noremap = true, silent = true })
+map("v", ">", ">gv", { noremap = true, silent = true })
 
 map("n", "<C-h>", "<C-w>h", { desc = "switch window left" })
 map("n", "<C-l>", "<C-w>l", { desc = "switch window right" })
@@ -23,6 +27,27 @@ map("v", "<leader>/", "gc", { desc = "Toggle comment", remap = true })
 -- nvimtree
 map("n", "<leader>ec", "<cmd>NvimTreeToggle<CR>", { desc = "nvimtree toggle window" })
 map("n", "<leader>e", "<cmd>NvimTreeFocus<CR>", { desc = "nvimtree focus window" })
+
+map("n", "<leader>th", function()
+  local api = require("nvim-tree.api")
+  api.tree.toggle_hidden_filter()
+
+  -- Read current state from file, flip it, and save
+  local f_read = io.open(state_file, "r")
+  local current_state = false
+  if f_read then
+    local content = f_read:read("*all")
+    f_read:close()
+    current_state = (content:gsub("%s+", "") == "true")
+  end
+
+  local new_state = not current_state
+  local f_write = io.open(state_file, "w")
+  if f_write then
+    f_write:write(tostring(new_state))
+    f_write:close()
+  end
+end, { desc = "Toggle and persist hidden files" })
 
 --bufferline
 map("n", "<Tab>", "<cmd>BufferLineCycleNext<CR>", { noremap = true, silent = true, desc = "Move to next buffer" })
@@ -52,6 +77,15 @@ map(
   end,
   { desc = "telescope find all files" }
 )
+
+-- folding
+map("n", "<leader>zr", require("ufo").openAllFolds, { desc = "UFO open all folds" })
+map("n", "<leader>zm", require("ufo").closeAllFolds, { desc = "UFO close all folds" })
+
+-- git stuff
+map("n", "<leader>gb", function()
+  require("utils").show_blame()
+end, { desc = "gitsigns show detailed commit blame float" })
 
 -- conform
 map({ "n", "x" }, "<leader>fm", function()

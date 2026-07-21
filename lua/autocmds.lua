@@ -51,6 +51,32 @@ vim.api.nvim_create_autocmd("FileType", {
   end,
 })
 
+-- vim.api.nvim_create_autocmd("FileType", {
+--   pattern = {
+--     "help",
+--     "alpha",
+--     "dashboard",
+--     "NvimTree",
+--     "Trouble",
+--     "lazy",
+--     "mason",
+--     "notify",
+--     "toggleterm",
+--     "gitcommit",
+--   },
+--   callback = function ()
+--     vim.b.miniindentscope_disable = true
+--   end
+-- })
+
+vim.api.nvim_create_autocmd("ColorScheme", {
+  pattern = "*",
+  callback = function()
+    vim.api.nvim_set_hl(0, "IblIndent", { fg = "#3b4252" })
+    vim.api.nvim_set_hl(0, "IblScope", { fg = "#88c0d0" })
+  end,
+})
+
 create_cmd("TSInstallAll", function()
   local spec = require("lazy.core.config").plugins["nvim-treesitter"]
   local opts = type(spec.opts) == "table" and spec.opts or {}

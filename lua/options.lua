@@ -33,7 +33,9 @@ o.undofile = true
 
 o.updatetime = 250
 
-o.clipboard = "unnamedplus"
+vim.schedule(function ()
+  o.clipboard = "unnamedplus"
+end)
 o.cursorline = true
 o.cursorlineopt = "number"
 o.guicursor = ""

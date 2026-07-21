@@ -15,6 +15,13 @@ M.opts = {
     use_focus = true,
   },
   current_line_blame_formatter = "<author> • <author_time:%R> - <summary>",
+  -- preview_config = {
+  --   border = "single",
+  --   style = "minimal",
+  --   relative = "cursor",
+  --   row = 0,
+  --   col = 1,
+  -- },
 }
 
 -- M.config = function(_, opts)

@@ -27,9 +27,6 @@ return {
     opts = function(_, opts)
       return utils.merge_opts(opts, require("config.nvimtree").opts)
     end,
-    -- config = function(_, opts)
-    --   require("config.nvimtree").config(_, opts)
-    -- end
   },
 
   {
@@ -57,6 +54,15 @@ return {
   },
 
   {
+    "lukas-reineke/indent-blankline.nvim",
+    main = "ibl",
+    event = { "BufReadPost", "BufNewFile" },
+    opts = function (_, opts)
+      return utils.merge_opts(opts, require("config.indent-blankline").opts)
+    end,
+  },
+
+  {
     "nvim-telescope/telescope.nvim",
     version = "*",
     dependencies = {
@@ -69,14 +75,34 @@ return {
   },
 
   {
+    "kevinhwang91/nvim-ufo",
+    dependencies = { "kevinhwang91/promise-async" },
+    event = { "BufReadPost" },
+    opts = function (_, opts)
+      return utils.merge_opts(opts, require("config.ufo").opts)
+    end,
+    config = function(_, opts)
+      require("config.ufo").config()
+      require("ufo").setup(opts)
+    end,
+  },
+
+  {
     "nvim-treesitter/nvim-treesitter",
     event = { "BufReadPost", "BufNewFile" },
     cmd = { "TSInstall", "TSBufEnable", "TSBufDisable", "TSModuleInfo" },
     build = ":TSUpdate | TSInstallAll",
-
     config = function()
       require "config.treesitter"
     end,
+  },
+
+  {
+    "HiPhish/rainbow-delimiters.nvim",
+    event = { "BufReadPost", "BufNewFile" },
+    config = function ()
+      require "config.rainbow-delimiters"
+    end
   },
 
   {
@@ -90,6 +116,7 @@ return {
 
   {
     "neovim/nvim-lspconfig",
+    event = { "BufReadPre", "BufNewFile" },
     config = function()
       local servers = {
         "lua_ls",

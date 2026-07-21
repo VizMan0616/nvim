@@ -1,10 +1,22 @@
 local bufferline = require "bufferline"
+-- local utils = require "utils"
+
+-- local ok, palehightfall = pcall(require, "palenightfall")
+-- local base_bg = (ok and palehightfall.colors and palehightfall.colors.background) or "#252837"
+
+-- local darker_bg = utils.darken_hex(base_bg, 0.90)
+
 bufferline.setup {
   options = {
     mode = "buffers",
     style_preset = bufferline.style_preset.no_italic,
     separator_style = "slope",
     sort_by = "insert_at_end",
+    diagnostics = "nvim_lsp",
+    diagnostics_indicator = function(count, level, diagnostics_dict, context)
+      local icon = level:match "error" and " " or " "
+      return " " .. icon .. count
+    end,
     indicator = { style = "underline" },
     offsets = {
       {
@@ -13,10 +25,6 @@ bufferline.setup {
         text_align = "left",
         separator = true,
       },
-    },
-    highlights = {
-      fill = { guibg = "NONE", ctermbg = "NONE" },
-      background = { guibg = "NONE", ctermbg = "NONE" },
     },
     name_formatter = function(buf)
       return buf.name

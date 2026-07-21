@@ -161,6 +161,14 @@ function M.lspconfigs(servers)
     }
   end
 
+  local _python_runtime = nil
+  local function get_cached_python_runtime()
+    if not _python_runtime then
+      _python_runtime = get_python_runtime "17" --[cite: 1]
+    end
+    return _python_runtime
+  end
+
   local root_dir = {
     python = function(bufnr, cb)
       local bufname = vim.api.nvim_buf_get_name(bufnr)
@@ -192,13 +200,16 @@ function M.lspconfigs(servers)
   }
 
   local ruff_config = paths.lsp.ruff.config_path()
-  local python_runtime = get_python_runtime "17"
+  -- local python_runtime = get_python_runtime "17"
 
   vim.lsp.config("ruff", {
+    cmd = { "ruff", "server" },
+    on_new_config = function (new_config, _)
+      new_config.cmd = get_cached_python_runtime().ruff
+    end,
     before_init = function(params)
       params.processId = vim.NIL
     end,
-    cmd = python_runtime.ruff,
     filetypes = { "python" },
     root_dir = root_dir.python,
     on_attach = function(client, _)
@@ -225,10 +236,15 @@ function M.lspconfigs(servers)
   })
 
   vim.lsp.config("basedpyright", {
+    cmd = { "basedpyright-langserver", "--stdio" },
+    on_new_config = function (new_config, _)
+      local runtime = get_cached_python_runtime()
+      new_config.cmd = runtime.basedpyright.cmd
+      new_config.settings.basedpyright.analysis.typeCheckingMode = runtime.basedpyright.analysis.typeCheckingMode
+    end,
     before_init = function(params)
       params.processId = vim.NIL
     end,
-    cmd = python_runtime.basedpyright.cmd,
     filetypes = { "python" },
     root_dir = root_dir.python,
     on_attach = function(client, _)
@@ -242,7 +258,7 @@ function M.lspconfigs(servers)
       basedpyright = {
         disableOrganizeImports = true,
         analysis = {
-          typeCheckingMode = python_runtime.basedpyright.analysis.typeCheckingMode,
+          typeCheckingMode = "standard",
           inlayHints = {
             variableTypes = true,
             functionReturnTypes = true,
@@ -270,10 +286,13 @@ function M.lspconfigs(servers)
   })
 
   vim.lsp.config("ty", {
+    cmd = { "ty", "server" },
+    on_new_config = function (new_config, _)
+      new_config.cmd = get_cached_python_runtime().ty
+    end,
     before_init = function(params)
       params.processId = vim.NIL
     end,
-    cmd = python_runtime.ty,
     filetypes = { "python" },
     root_dir = root_dir.python,
     on_attach = function(client, _)

@@ -34,6 +34,12 @@ local notify_config = {
   },
 }
 
+local indentscope_config = {
+  symbol = "│",
+  options = { try_as_border = true },
+  draw = { delay = 0, animation = require("mini.indentscope").gen_animation.none() },
+}
+
 local cmdline_config = {
   autocomplete = {
     enable = true,
@@ -60,3 +66,4 @@ local cmdline_config = {
 require("mini.cmdline").setup(cmdline_config)
 require("mini.pairs").setup(pairs_config)
 require("mini.notify").setup(notify_config)
+-- require("mini.indentscope").setup(indentscope_config)
