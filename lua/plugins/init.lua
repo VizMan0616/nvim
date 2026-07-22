@@ -63,6 +63,14 @@ return {
   },
 
   {
+    "RRethy/vim-illuminate",
+    event = { "BufReadPost", "BufNewFile" },
+    config = function ()
+      require "config.illuminate"
+    end
+  },
+
+  {
     "nvim-telescope/telescope.nvim",
     version = "*",
     dependencies = {
@@ -72,6 +80,14 @@ return {
     opts = function(_, opts)
       return utils.merge_opts(opts, require("config.telescope").opts)
     end,
+  },
+  {
+    "windwp/nvim-ts-autotag",
+    event = { "BufReadPre", "BufNewFile" },
+    opts = function (_, opts)
+      return utils.merge_opts(opts, require("config.ts-autotag").opts)
+    end
+    -- config = require "configs.nvim-ts-autotag",
   },
 
   {
@@ -124,6 +140,13 @@ return {
         "ruff",
         "basedpyright",
         "ty",
+        -- webdevelopment (html, css & js/ts)
+        "html",
+        "emmet_language_server",
+        "cssls",
+        "ts_ls",
+        -- rust
+        "rust_analyzer",
       }
 
       require("mason-lspconfig").setup { ensure_installed = servers }

@@ -73,7 +73,7 @@ map(
   "n",
   "<leader>fa",
   function ()
-    telescope_builtin.find_files { follow = true, no_ignore = true, hidden = true } 
+    telescope_builtin.find_files { follow = true, no_ignore = true, hidden = true }
   end,
   { desc = "telescope find all files" }
 )
@@ -91,6 +91,12 @@ end, { desc = "gitsigns show detailed commit blame float" })
 map({ "n", "x" }, "<leader>fm", function()
   require("conform").format { lsp_fallback = true }
 end, { desc = "general format file" })
+
+map("n", "<leader>rp", require("illuminate").goto_prev_reference, { desc = "Move to previous reference" })
+map("n", "<leader>rn", require("illuminate").goto_next_reference, { desc = "Move to next reference" })
+
+-- Text Object Keymap (selects current illuminated reference)
+map({ "o", "x" }, "<a-i>", require("illuminate").textobj_select, { desc = "Select illuminated reference" })
 
 -- lsp diagnostics
 map("n", "<leader>ds", vim.diagnostic.open_float, { desc = "LSP show diagnostic float" })

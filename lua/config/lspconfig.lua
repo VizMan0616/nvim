@@ -204,7 +204,7 @@ function M.lspconfigs(servers)
 
   vim.lsp.config("ruff", {
     cmd = { "ruff", "server" },
-    on_new_config = function (new_config, _)
+    on_new_config = function(new_config, _)
       new_config.cmd = get_cached_python_runtime().ruff
     end,
     before_init = function(params)
@@ -237,7 +237,7 @@ function M.lspconfigs(servers)
 
   vim.lsp.config("basedpyright", {
     cmd = { "basedpyright-langserver", "--stdio" },
-    on_new_config = function (new_config, _)
+    on_new_config = function(new_config, _)
       local runtime = get_cached_python_runtime()
       new_config.cmd = runtime.basedpyright.cmd
       new_config.settings.basedpyright.analysis.typeCheckingMode = runtime.basedpyright.analysis.typeCheckingMode
@@ -287,7 +287,7 @@ function M.lspconfigs(servers)
 
   vim.lsp.config("ty", {
     cmd = { "ty", "server" },
-    on_new_config = function (new_config, _)
+    on_new_config = function(new_config, _)
       new_config.cmd = get_cached_python_runtime().ty
     end,
     before_init = function(params)
@@ -304,6 +304,94 @@ function M.lspconfigs(servers)
       client.server_capabilities.signatureHelpProvider = false
     end,
     settings = { ty = {} },
+  })
+
+  vim.lsp.config("emmet_language_server", {
+    filetypes = {
+      "css",
+      "html",
+      "javascript",
+      "javascriptreact",
+      "less",
+      "typescriptreact",
+    },
+    init_options = {
+      includeLanguages = {},
+      excludeLanguages = {},
+      extensionsPath = {},
+      preferences = {},
+      showAbbreviationSuggestions = true,
+      showExpandedAbbreviation = "always",
+      showSuggestionsAsSnippets = false,
+      syntaxProfiles = {},
+      variables = {},
+    },
+  })
+
+  vim.lsp.config("cssls", {
+    filetypes = { "css", "scss", "less" },
+    init_options = { provideFormatter = true },
+    single_file_support = true,
+    settings = {
+      css = {
+        lint = { unknownAtRules = "ignore" },
+        validate = true,
+      },
+      scss = {
+        lint = { unknownAtRules = "ignore" },
+        validate = true,
+      },
+      less = {
+        lint = { unknownAtRules = "ignore" },
+        validate = true,
+      },
+    },
+  })
+
+  vim.lsp.config("ts_ls", {
+    cmd = { "typescript-language-server", "--stdio" },
+    filetypes = { "javascript", "javascriptreact", "typescript", "typescriptreact" },
+    root_dir = root_dir.typescript,
+    workspace_required = false,
+    single_file_support = true,
+    init_options = {
+      preferences = {
+        includeCompletionsForModuleExports = true,
+        includeCompletionsForImportStatements = true,
+      },
+    },
+    settings = {
+      typescript = {
+        inlayHints = {
+          includeInlayParameterNameHints = "all",
+          includeInlayVariableTypeHints = true,
+          includeInlayFunctionParameterTypeHints = true,
+        },
+      },
+      javascript = {
+        inlayHints = {
+          includeInlayParameterNameHints = "none",
+          includeInlayVariableTypeHints = false,
+          includeInlayFunctionParameterTypeHints = false,
+        },
+      },
+    },
+  })
+
+  vim.lsp.config("rust_analyzer", {
+    filetypes = { "rust" },
+    settings = {
+      ["rust-analyzer"] = {
+        -- clippy is just better
+        check = { command = "clippy" },
+        -- off by default (very much needed)
+        procMacro = { enable = true },
+        cargo = {
+          buildScripts = { enable = true },
+          allFeatures = true,
+        },
+      },
+    },
   })
 
   vim.lsp.enable(servers)

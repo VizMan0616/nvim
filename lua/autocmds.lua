@@ -69,6 +69,35 @@ autocmd("FileType", {
   end,
 })
 
+-- vim.api.nvim_set_hl(0, "LspReferenceText", { underline = true, sp = "#56B6C2" })
+-- vim.api.nvim_set_hl(0, "LspReferenceRead", { underline = true, sp = "#56B6C2" })
+-- vim.api.nvim_set_hl(0, "LspReferenceWrite", { underline = true, sp = "#56B6C2" })
+--
+-- vim.api.nvim_create_autocmd("LspAttach", {
+--   group = vim.api.nvim_create_augroup("UserLspHighlight", { clear = true }),
+--   callback = function(event)
+--     local client = vim.lsp.get_client_by_id(event.data.client_id)
+--
+--     if client and client.server_capabilities.documentHighlightProvider then
+--       local highlight_augroup = vim.api.nvim_create_augroup("lsp_document_highlight", { clear = false })
+--
+--       vim.api.nvim_clear_autocmds({ buffer = event.buf, group = highlight_augroup })
+--
+--       vim.api.nvim_create_autocmd({ "CursorHold", "CursorHoldI" }, {
+--         buffer = event.buf,
+--         group = highlight_augroup,
+--         callback = vim.lsp.buf.document_highlight,
+--       })
+--
+--       vim.api.nvim_create_autocmd({ "CursorMoved", "CursorMovedI" }, {
+--         buffer = event.buf,
+--         group = highlight_augroup,
+--         callback = vim.lsp.buf.clear_references,
+--       })
+--     end
+--   end,
+-- })
+
 local before_commits = {}
 vim.api.nvim_create_autocmd("User", {
   pattern = "VeryLazy",
