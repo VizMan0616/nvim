@@ -14,6 +14,8 @@ local ODOO_CONFIGS = {
   ["19"] = { odoo = "19.0", os = UBUNTU.NOBLE },
 }
 
+local lockfile_path = vim.fn.stdpath "config" .. "/lazy-lock.json"
+
 local function copy(obj, seen)
   if type(obj) ~= "table" then
     return obj
@@ -82,6 +84,29 @@ local function wrap_line(line, max_len)
   end
 
   return wrapped
+end
+
+function M.get_lockfile_commits()
+  local f = io.open(lockfile_path, "r")
+  if not f then
+    return {}
+  end
+
+  local content = f:read "*a"
+  f:close()
+
+  local ok, decoded = pcall(vim.json.decode, content)
+  if not ok or type(decoded) ~= "table" then
+    return {}
+  end
+
+  local commits = {}
+  for plugin_name, info in pairs(decoded) do
+    if type(info) == "table" and info.commit then
+      commits[plugin_name] = info.commit
+    end
+  end
+  return commits
 end
 
 function M.show_blame()

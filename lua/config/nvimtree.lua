@@ -16,6 +16,7 @@ M.opts = {
   filters = { dotfiles = not load_show_dotfiles() },
   disable_netrw = true,
   hijack_cursor = true,
+  hijack_directories = { enable = false },
   sync_root_with_cwd = true,
   update_focused_file = {
     enable = true,
