@@ -27,6 +27,9 @@ return {
     opts = function(_, opts)
       return utils.merge_opts(opts, require("config.nvimtree").opts)
     end,
+    config = function(_, opts)
+      require("config.nvimtree").config(_, opts)
+    end
   },
 
   {
