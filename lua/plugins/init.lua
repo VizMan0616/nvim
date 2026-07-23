@@ -147,6 +147,9 @@ return {
         "ts_ls",
         -- rust
         "rust_analyzer",
+        -- utils
+        "dockerls",
+        "docker_language_server",
       }
 
       require("mason-lspconfig").setup { ensure_installed = servers }

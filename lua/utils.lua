@@ -50,7 +50,7 @@ local function check_container_running(container_pattern, format)
   if result.code == 1 then
     return false, result.stderr
   end
-  if result.stdout ~= "" and result.stdout:match(container_pattern) then
+  if result.stdout ~= "" and result.stdout:find(container_pattern) then
     return true, result.stdout
   end
 
@@ -305,7 +305,7 @@ function M.darken_hex(hex, factor)
 end
 
 function M.check_if_odoo_container_is_running()
-  return check_container_running("%-odoo", "image")
+  return check_container_running("odoo:", "image")
 end
 
 function M.check_if_odoo_development_image_exists(odoo_version)
