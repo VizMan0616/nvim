@@ -35,7 +35,7 @@ M.opts = {
       min = vim.diagnostic.severity.WARN,
       max = vim.diagnostic.severity.ERROR,
     },
-    icons = { warning = "●", error = "●" },
+    icons = { error = " ", warning = " " },
   },
   renderer = {
     root_folder_label = false,
