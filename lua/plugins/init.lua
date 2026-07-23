@@ -138,7 +138,7 @@ return {
         "lua_ls",
         -- python
         "ruff",
-        "basedpyright",
+        -- "basedpyright",
         "ty",
         -- webdevelopment (html, css & js/ts)
         "html",

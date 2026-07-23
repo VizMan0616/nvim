@@ -95,79 +95,6 @@ end
 
 function M.lspconfigs(servers)
   local paths = require "paths"
-  local utils = require "utils"
-
-  local function get_python_runtime(odoo_version)
-    local workspace = vim.fn.getcwd()
-    local default_runner = {
-      ruff = { "ruff", "server" },
-      basedpyright = {
-        cmd = { "basedpyright-langserver", "--stdio" },
-        analysis = { typeCheckingMode = "standard" },
-      },
-      ty = { "ty", "server" },
-    }
-
-    local is_running, _ = utils.check_if_odoo_container_is_running()
-    local image_path_exists = utils.check_development_image_path_exists()
-
-    if not is_running or not image_path_exists then
-      return default_runner
-    end
-
-    local image_exist, _ = utils.check_if_odoo_development_image_exists(odoo_version)
-    if not image_exist then
-      utils.build_odoo_development_image(odoo_version)
-    end
-    utils.run_odoo_development_image(odoo_version, workspace)
-
-    return {
-      ruff = {
-        "docker",
-        "run",
-        "-i",
-        "--rm",
-        "-v",
-        workspace .. ":" .. workspace,
-        "odoo-" .. odoo_version .. "-development:latest",
-        "ruff",
-        "server",
-      },
-      basedpyright = {
-        cmd = {
-          "docker",
-          "run",
-          "-i",
-          "--rm",
-          "-v",
-          workspace .. ":" .. workspace,
-          "odoo-" .. odoo_version .. "-development:latest",
-          "basedpyright-langserver",
-          "--stdio",
-        },
-        analysis = { typeCheckingMode = "off" },
-      },
-      ty = {
-        "docker",
-        "run",
-        "-i",
-        "--rm",
-        "-v",
-        workspace .. ":" .. workspace,
-        "odoo-" .. odoo_version .. "-development:latest",
-        "ty",
-        "server",
-      },
-    }
-  end
-
-  local _python_runtime = nil
-  local function get_cached_python_runtime()
-    if not _python_runtime then
-      _python_runtime = get_python_runtime "17" --[cite: 1]
-    end
-    return _python_runtime
-  end
 
   local root_dir = {
     python = function(bufnr, cb)
@@ -200,16 +127,8 @@ function M.lspconfigs(servers)
   }
 
   local ruff_config = paths.lsp.ruff.config_path()
-  -- local python_runtime = get_python_runtime "17"
 
   vim.lsp.config("ruff", {
-    cmd = { "ruff", "server" },
-    on_new_config = function(new_config, _)
-      new_config.cmd = get_cached_python_runtime().ruff
-    end,
-    before_init = function(params)
-      params.processId = vim.NIL
-    end,
     filetypes = { "python" },
     root_dir = root_dir.python,
     on_attach = function(client, _)
@@ -235,74 +154,43 @@ function M.lspconfigs(servers)
     single_file_support = false,
   })
 
-  vim.lsp.config("basedpyright", {
-    cmd = { "basedpyright-langserver", "--stdio" },
-    on_new_config = function(new_config, _)
-      local runtime = get_cached_python_runtime()
-      new_config.cmd = runtime.basedpyright.cmd
-      new_config.settings.basedpyright.analysis.typeCheckingMode = runtime.basedpyright.analysis.typeCheckingMode
-    end,
-    before_init = function(params)
-      params.processId = vim.NIL
-    end,
-    filetypes = { "python" },
-    root_dir = root_dir.python,
-    on_attach = function(client, _)
-      client.server_capabilities.completionProvider = false
-      client.server_capabilities.definitionProvider = false
-      client.server_capabilities.documentHighlightProvider = false
-      client.server_capabilities.renameProvider = false
-      client.server_capabilities.semanticTokensProvider = false
-    end,
-    settings = {
-      basedpyright = {
-        disableOrganizeImports = true,
-        analysis = {
-          typeCheckingMode = "standard",
-          inlayHints = {
-            variableTypes = true,
-            functionReturnTypes = true,
-            callArgumentNames = false,
-            genericTypes = false,
-          },
-          autoImportCompletions = true,
-          autoSearchPaths = true,
-          diagnosticsMode = "openFilesOnly",
-          useLibraryCodeForTypes = true,
-          diagnosticServerityOverrides = {
-            reportUnknownMeberType = "none",
-            reportUnusedCallResult = "none",
-          },
-          exclude = {
-            "**/.venv",
-            "**/venv",
-            "**/__pycache__",
-            "**/dist",
-            "**/build",
-          },
-        },
-      },
-    },
-  })
+  -- vim.lsp.config("basedpyright", {
+  --   filetypes = { "python" },
+  --   root_dir = root_dir.python,
+  --   settings = {
+  --     basedpyright = {
+  --       disableOrganizeImports = true,
+  --       analysis = {
+  --         typeCheckingMode = python_runtime.basedpyright.analysis.typeCheckingMode,
+  --         inlayHints = {
+  --           variableTypes = true,
+  --           functionReturnTypes = true,
+  --           callArgumentNames = false,
+  --           genericTypes = false,
+  --         },
+  --         autoImportCompletions = true,
+  --         autoSearchPaths = true,
+  --         diagnosticsMode = "openFilesOnly",
+  --         useLibraryCodeForTypes = true,
+  --         diagnosticServerityOverrides = {
+  --           reportUnknownMeberType = "none",
+  --           reportUnusedCallResult = "none",
+  --         },
+  --         exclude = {
+  --           "**/.venv",
+  --           "**/venv",
+  --           "**/__pycache__",
+  --           "**/dist",
+  --           "**/build",
+  --         },
+  --       },
+  --     },
+  --   },
+  -- })
 
   vim.lsp.config("ty", {
-    cmd = { "ty", "server" },
-    on_new_config = function(new_config, _)
-      new_config.cmd = get_cached_python_runtime().ty
-    end,
-    before_init = function(params)
-      params.processId = vim.NIL
-    end,
     filetypes = { "python" },
     root_dir = root_dir.python,
-    on_attach = function(client, _)
-      client.server_capabilities.codeActionProvider = false
-      client.server_capabilities.documentSymbolProvider = false
-      client.server_capabilities.hoverProvider = false
-      client.server_capabilities.inlayHintProvider = false
-      client.server_capabilities.referenceProvider = false
-      client.server_capabilities.signatureHelpProvider = false
-    end,
     settings = { ty = {} },
   })
 
